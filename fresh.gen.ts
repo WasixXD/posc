@@ -5,7 +5,9 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $api_create_deck from "./routes/api/create/deck.ts";
+import * as $api_create_question from "./routes/api/create/question.ts";
 import * as $api_list_deck from "./routes/api/list/deck.ts";
+import * as $api_list_tag from "./routes/api/list/tag.ts";
 import * as $index from "./routes/index.tsx";
 import * as $Home from "./islands/Home.tsx";
 import type { Manifest } from "$fresh/server.ts";
@@ -15,7 +17,9 @@ const manifest = {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/api/create/deck.ts": $api_create_deck,
+    "./routes/api/create/question.ts": $api_create_question,
     "./routes/api/list/deck.ts": $api_list_deck,
+    "./routes/api/list/tag.ts": $api_list_tag,
     "./routes/index.tsx": $index,
   },
   islands: {
