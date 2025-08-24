@@ -47,7 +47,9 @@ export default function TagSelect(
       </datalist>
 
       <div class="flex flex-wrap gap-2 mb-2">
-        {tags.map((tag) => <div class="badge badge-primary">{tag}</div>)}
+        {tags.map((tag) => (
+          <div key={tag} class="badge badge-primary">{tag}</div>
+        ))}
       </div>
     </div>
   );

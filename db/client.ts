@@ -1,15 +1,15 @@
 import { Pool, type QueryResult } from "pg";
 
-const pool: Pool = new Pool({
-  host: Deno.env.get("POSTGRES_HOST"),
-  user: Deno.env.get("POSTGRES_USER"),
-  password: Deno.env.get("POSTGRES_PASSWORD"),
-  database: Deno.env.get("POSTGRES_DB"),
+export const pool: Pool = new Pool({
+  host: Deno.env.get("POSTGRES_HOST") || "localhost",
+  user: Deno.env.get("POSTGRES_USER") || "postgres",
+  password: Deno.env.get("POSTGRES_PASSWORD") || "postgres",
+  database: Deno.env.get("POSTGRES_DB") || "posc",
 });
 
 export async function query(
   text: string,
-  params: string[] = [],
+  params: any[] = [],
 ): Promise<QueryResult> {
   const now = Date.now();
   const res = await pool.query(text, params);

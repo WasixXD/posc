@@ -163,6 +163,61 @@ export default function Home(props: Props) {
           </form>
         </div>
       </dialog>
+
+      {/* ------------------------------------------ */}
+      <button
+        type="button"
+        className="btn"
+        onClick={() => document.getElementById("my_modal_5").showModal()}
+      >
+        Start Session
+      </button>
+      <dialog id="my_modal_5" className="modal">
+        <div className="modal-box">
+          <form method="dialog">
+            <button
+              type="button"
+              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            >
+              ✕
+            </button>
+          </form>
+          <h3 className="font-bold text-lg">Start Session</h3>
+
+          <form
+            method="post"
+            action="/api/create/deck"
+            className="flex flex-col align-center"
+          >
+            <label htmlFor="deck_id">
+              Deck:
+            </label>
+            <select
+              defaultValue="Select Deck"
+              className="select"
+              name="deck_id"
+              required
+            >
+              <option>Select Deck</option>
+              {decks.map((deck) => (
+                <option key={deck.deck_id} value={deck.deck_id}>
+                  {deck.name}
+                </option>
+              ))}
+            </select>
+
+            <input
+              type="number"
+              placeholder="Number of Questions"
+              className="input my-8 w-full"
+              name="n_questions"
+              required
+            />
+
+            <button type="submit" className="btn btn-primary">Start</button>
+          </form>
+        </div>
+      </dialog>
     </div>
   );
 }
