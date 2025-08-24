@@ -1,22 +1,22 @@
 import { Handlers } from "$fresh/server.ts";
 import { query } from "../../../db/client.ts";
 
-async function getTagId(tag: string): Promise<number> {
+async function getTagId(tag: string, deck_id: string): Promise<number> {
   const rows = await query("SELECT * FROM tag WHERE name = $1", [tag]);
 
   if (rows.rowCount <= 0) {
     const result = await query(
-      "INSERT INTO tag (name) VALUES ($1) RETURNING tag_id",
-      [tag],
+      "INSERT INTO tag (deck_id, name) VALUES ($1, $2) RETURNING tag_id",
+      [deck_id, tag],
     );
 
-    const { id } = result.rows[0];
-    return id;
+    const { tag_id } = result.rows[0];
+    return tag_id;
   }
 
-  const { id } = rows.rows[0];
+  const { tag_id } = rows.rows[0];
 
-  return id;
+  return tag_id;
 }
 
 export const handler: Handlers = {
@@ -30,7 +30,7 @@ export const handler: Handlers = {
       formData.get("tag") as string,
     ];
     const filePath = `./uploads/${file.name}`;
-    const tag_id = await getTagId(tag);
+    const tag_id = await getTagId(tag, deck_id);
 
     const bytes = new Uint8Array(await file.arrayBuffer());
     await Deno.writeFile(filePath, bytes);

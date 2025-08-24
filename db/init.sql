@@ -6,6 +6,18 @@ CREATE TABLE deck(
     correctness_percent real default 0
 );
 
+CREATE TABLE tag (
+    tag_id serial primary key,
+    deck_id int references deck (deck_id),
+    name varchar(50) not null
+);
+
+CREATE TABLE performance (
+    tag_id int references tag (tag_id),
+    errors int default 0,
+    corrects int default 0
+);
+
 CREATE TABLE question (
     q_id serial primary key,
     deck_id int references deck (deck_id),
@@ -16,14 +28,4 @@ CREATE TABLE question (
 );
 
 
-CREATE TABLE performance (
-    tag_id int references tag (tag_id),
-    errors int default 0,
-    corrects int default 0
-);
 
-
-CREATE TABLE tag (
-    tag_id serial primary key,
-    name varchar(50) not null
-);

@@ -1,5 +1,5 @@
 import { useState } from "preact/hooks";
-import { Tag } from "../routes/api/list/tag.ts";
+import { type Tag } from "../routes/api/list/tag.ts";
 
 export default function TagSelect(
   { initialTags = [], name }: { initialTags?: Tag[]; name: string },
