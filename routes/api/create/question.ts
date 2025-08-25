@@ -30,6 +30,8 @@ export const handler: Handlers = {
       formData.get("tag") as string,
     ];
     const filePath = `./uploads/${file.name}`;
+    await Deno.mkdir("./uploads/", { recursive: true });
+
     const tag_id = await getTagId(tag, deck_id);
 
     const bytes = new Uint8Array(await file.arrayBuffer());

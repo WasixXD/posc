@@ -186,7 +186,7 @@ export default function Home(props: Props) {
 
           <form
             method="post"
-            action="/api/create/deck"
+            action="/api/create/session"
             className="flex flex-col align-center"
           >
             <label htmlFor="deck_id">

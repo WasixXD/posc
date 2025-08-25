@@ -84,6 +84,19 @@ export class Session {
       [tagsId],
     );
 
+    if (performancesRows.rowCount <= 0) {
+      for (let i = 0; i < maxQuestions; i++) {
+        const q = await query(
+          "SELECT * FROM question WHERE q_id != ALL ($1::int[]) ORDER BY RANDOM() LIMIT 1",
+          [this.questions.map((q) => q.q_id)],
+        );
+
+        const question: Question = q.rows[0];
+        this.questions.push(question);
+      }
+      return;
+    }
+
     const performances: Performance[] = performancesRows.rows;
     const questionsDistribuition = this.WRS(maxQuestions, performances);
 
@@ -98,3 +111,5 @@ export class Session {
     }
   }
 }
+
+export const Sessions = new Map<string, Session>();
