@@ -16,7 +16,7 @@ function CreateQuestion(
     <div>
       <button
         type="button"
-        className="btn btn-join btn-secondary"
+        className="btn btn-soft btn-join btn-secondary"
         onClick={() => {
           const dialog = document.getElementById("my_modal_4") as
             | HTMLDialogElement
@@ -108,7 +108,7 @@ function CreateDeck() {
     <div>
       <button
         type="button"
-        className="btn btn-join btn-primary"
+        className="btn btn-soft btn-join btn-primary"
         onClick={() => {
           const dialog = document.getElementById("my_modal_3") as
             | HTMLDialogElement
@@ -239,7 +239,7 @@ export default function Home(props: Props) {
         {/* ------------------------------------------ */}
         <button
           type="button"
-          className="btn btn-join btn-secondary"
+          className="btn btn-soft btn-join btn-secondary"
           onClick={() => {
             const dialog = document.getElementById("my_modal_5") as
               | HTMLDialogElement

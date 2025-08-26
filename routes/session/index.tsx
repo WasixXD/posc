@@ -18,7 +18,7 @@ export const handler: Handlers = {
 };
 
 export default function SessionPage(props: PageProps<Props>) {
-  const { questions } = props.data;
+  const { questions, uuid } = props.data;
 
   return (
     <div>
