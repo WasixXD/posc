@@ -29,8 +29,9 @@ export const handler: Handlers = {
       formData.get("correct") as string,
       formData.get("tag") as string,
     ];
-    const filePath = `./uploads/${file.name}`;
-    await Deno.mkdir("./uploads/", { recursive: true });
+    const filePath = `static/uploads/${file.name}`;
+    const actualPath = `/uploads/${file.name}`;
+    await Deno.mkdir("static/uploads/", { recursive: true });
 
     const tag_id = await getTagId(tag, deck_id);
 
@@ -39,7 +40,7 @@ export const handler: Handlers = {
 
     await query(
       "INSERT INTO question(deck_id, tag_id, question, correct) VALUES ($1, $2, $3, $4)",
-      [deck_id, String(tag_id), filePath, correct],
+      [deck_id, String(tag_id), actualPath, correct],
     );
 
     query(

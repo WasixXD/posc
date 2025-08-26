@@ -1,7 +1,7 @@
 import { query } from "../db/client.ts";
 import { Tag } from "../routes/api/list/tag.ts";
 
-interface Question {
+export interface Question {
   q_id: number;
   deck_id: number;
   tag_id: number;
@@ -10,7 +10,7 @@ interface Question {
   correct: string;
 }
 
-interface Performance {
+export interface Performance {
   tag_id: number;
   errors: number;
   corrects: number;
@@ -25,14 +25,6 @@ export class Session {
   constructor(deck_id: string) {
     this.session_id = crypto.randomUUID();
     this.deck_id = deck_id;
-  }
-  current(): Question {
-    return this.questions[this.cursor];
-  }
-
-  getNext(): Question {
-    this.cursor++;
-    return this.current();
   }
 
   // Weighted Random Selection

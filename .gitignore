@@ -5,7 +5,7 @@
 .env.production.local
 .env.local
 
-uploads/*
+static/uploads/*
 
 # Fresh build directory
 _fresh/

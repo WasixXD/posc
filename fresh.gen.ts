@@ -5,6 +5,7 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $api_create_deck from "./routes/api/create/deck.ts";
+import * as $api_create_performance from "./routes/api/create/performance.ts";
 import * as $api_create_question from "./routes/api/create/question.ts";
 import * as $api_create_session from "./routes/api/create/session.ts";
 import * as $api_list_deck from "./routes/api/list/deck.ts";
@@ -12,6 +13,7 @@ import * as $api_list_tag from "./routes/api/list/tag.ts";
 import * as $index from "./routes/index.tsx";
 import * as $session_index from "./routes/session/index.tsx";
 import * as $Home from "./islands/Home.tsx";
+import * as $Question from "./islands/Question.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -19,6 +21,7 @@ const manifest = {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/api/create/deck.ts": $api_create_deck,
+    "./routes/api/create/performance.ts": $api_create_performance,
     "./routes/api/create/question.ts": $api_create_question,
     "./routes/api/create/session.ts": $api_create_session,
     "./routes/api/list/deck.ts": $api_list_deck,
@@ -28,6 +31,7 @@ const manifest = {
   },
   islands: {
     "./islands/Home.tsx": $Home,
+    "./islands/Question.tsx": $Question,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;
