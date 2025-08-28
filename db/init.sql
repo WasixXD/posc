@@ -1,4 +1,4 @@
-CREATE TABLE deck(
+CREATE TABLE IF NOT EXISTS deck(
     deck_id serial primary key,
     name varchar(50) not null,
 
@@ -6,19 +6,19 @@ CREATE TABLE deck(
     correctness_percent real default 0
 );
 
-CREATE TABLE tag (
+CREATE TABLE IF NOT EXISTS tag (
     tag_id serial primary key,
     deck_id int references deck (deck_id),
     name varchar(50) not null
 );
 
-CREATE TABLE performance (
+CREATE TABLE IF NOT EXISTS performance (
     tag_id int references tag (tag_id) primary key,
     errors int default 0,
     corrects int default 0
 );
 
-CREATE TABLE question (
+CREATE TABLE IF NOT EXISTS question (
     q_id serial primary key,
     deck_id int references deck (deck_id),
     tag_id int references tag (tag_id),
@@ -26,6 +26,4 @@ CREATE TABLE question (
     question text not null default '/',
     correct char not null default 'A'
 );
-
-
 

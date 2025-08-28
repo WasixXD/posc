@@ -22,3 +22,8 @@ export async function query(
   });
   return res;
 }
+
+const decoder = new TextDecoder();
+const fileContent = await Deno.readFile("db/init.sql");
+
+await query(decoder.decode(fileContent));
