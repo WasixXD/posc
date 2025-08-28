@@ -4,6 +4,7 @@
 
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
+import * as $api_cleanup from "./routes/api/cleanup.ts";
 import * as $api_create_deck from "./routes/api/create/deck.ts";
 import * as $api_create_performance from "./routes/api/create/performance.ts";
 import * as $api_create_question from "./routes/api/create/question.ts";
@@ -16,6 +17,7 @@ import * as $statistics from "./routes/statistics.tsx";
 import * as $AnswerTable from "./islands/AnswerTable.tsx";
 import * as $Chart from "./islands/Chart.tsx";
 import * as $Home from "./islands/Home.tsx";
+import * as $HomeButton from "./islands/HomeButton.tsx";
 import * as $Question from "./islands/Question.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
@@ -23,6 +25,7 @@ const manifest = {
   routes: {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
+    "./routes/api/cleanup.ts": $api_cleanup,
     "./routes/api/create/deck.ts": $api_create_deck,
     "./routes/api/create/performance.ts": $api_create_performance,
     "./routes/api/create/question.ts": $api_create_question,
@@ -37,6 +40,7 @@ const manifest = {
     "./islands/AnswerTable.tsx": $AnswerTable,
     "./islands/Chart.tsx": $Chart,
     "./islands/Home.tsx": $Home,
+    "./islands/HomeButton.tsx": $HomeButton,
     "./islands/Question.tsx": $Question,
   },
   baseUrl: import.meta.url,
