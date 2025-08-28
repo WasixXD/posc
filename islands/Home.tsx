@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import { type Deck } from "../routes/api/list/deck.ts";
 import TagSelect from "../components/TagSelect.tsx";
 import { type Tag } from "../routes/api/list/tag.ts";
@@ -9,9 +9,91 @@ interface Props {
   tags: Tag[];
 }
 
+// Vibe Coded Component
 function CreateQuestion(
   props: { decks: Deck[]; handle_submit: Function; tags: Tag[] },
 ) {
+  const [dragActive, setDragActive] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleDrag = (e: DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e: DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+
+    if (e.dataTransfer?.files && e.dataTransfer.files[0]) {
+      const file = e.dataTransfer.files[0];
+      if (file.type.startsWith("image/")) {
+        setSelectedFile(file);
+        if (fileInputRef.current) {
+          // Create a new FileList-like object
+          const dt = new DataTransfer();
+          dt.items.add(file);
+          fileInputRef.current.files = dt.files;
+        }
+      }
+    }
+  };
+
+  const handlePaste = (e: ClipboardEvent) => {
+    const items = e.clipboardData?.items;
+    if (items) {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.startsWith("image/")) {
+          const file = items[i].getAsFile();
+          if (file) {
+            setSelectedFile(file);
+            if (fileInputRef.current) {
+              const dt = new DataTransfer();
+              dt.items.add(file);
+              fileInputRef.current.files = dt.files;
+            }
+            break;
+          }
+        }
+      }
+    }
+  };
+
+  const handleFileChange = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    if (target.files && target.files[0]) {
+      setSelectedFile(target.files[0]);
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === "v") {
+        const modal = document.getElementById(
+          "my_modal_4",
+        ) as HTMLDialogElement;
+        if (modal?.open) {
+          // Allow paste event to be handled by handlePaste
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("paste", handlePaste);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("paste", handlePaste);
+    };
+  }, []);
+
   return (
     <div>
       <button
@@ -48,8 +130,8 @@ function CreateQuestion(
             onSubmit={props.handle_submit}
             className="flex flex-col items-center w-full max-w-md mx-auto space-y-4"
           >
-            <label htmlFor="deck_id" class="select w-full">
-              <span class="label">Deck:</span>
+            <label htmlFor="deck_id" className="select w-full">
+              <span className="label">Deck:</span>
               <select
                 defaultValue="Select Deck"
                 className="select"
@@ -65,15 +147,56 @@ function CreateQuestion(
               </select>
             </label>
 
-            <input
-              type="file"
-              class="file-input file-input-secondary w-full"
-              name="file"
-              required
-            />
+            <div
+              className={`relative w-full border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+                dragActive
+                  ? "border-primary bg-primary/10"
+                  : "border-gray-300 hover:border-gray-400"
+              }`}
+              onDragEnter={handleDrag}
+              onDragLeave={handleDrag}
+              onDragOver={handleDrag}
+              onDrop={handleDrop}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                className="file-input file-input-secondary w-full opacity-0 absolute inset-0 cursor-pointer"
+                name="file"
+                accept="image/*"
+                required
+                onChange={handleFileChange}
+              />
+              <div className="pointer-events-none">
+                {selectedFile
+                  ? (
+                    <div className="text-sm">
+                      <p className="font-medium text-green-600">
+                        ✓ {selectedFile.name}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        File selected ({(selectedFile.size / 1024 / 1024)
+                          .toFixed(2)} MB)
+                      </p>
+                    </div>
+                  )
+                  : (
+                    <div className="text-sm text-gray-500">
+                      <p className="font-medium">Upload Question Image</p>
+                      <p className="mt-1">
+                        Click to browse, drag & drop, or Ctrl+V to paste from
+                        clipboard
+                      </p>
+                      <p className="text-xs mt-2">
+                        Supports: PNG, JPG, GIF, WebP
+                      </p>
+                    </div>
+                  )}
+              </div>
+            </div>
 
-            <label htmlFor="correct" class="select w-full">
-              <span class="label">Correct Answer:</span>
+            <label htmlFor="correct" className="select w-full">
+              <span className="label">Correct Answer:</span>
               <select
                 defaultValue="Correct answer"
                 className="select"
@@ -103,6 +226,7 @@ function CreateQuestion(
     </div>
   );
 }
+
 function CreateDeck() {
   return (
     <div>
