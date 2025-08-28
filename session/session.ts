@@ -123,10 +123,15 @@ export class Session {
     const questionsDistribuition = this.WRS(maxQuestions, performances);
 
     for (const tagId of questionsDistribuition) {
-      const q = await query(
-        "SELECT * FROM question WHERE tag_id = $1 ORDER BY RANDOM() LIMIT 1",
-        [tagId],
+      let q = await query(
+        "SELECT * FROM question WHERE tag_id = $1 AND q_id != ALL ($2::int[]) ORDER BY RANDOM() LIMIT 1",
+        [tagId, this.questions.map((q) => q.q_id)],
       );
+
+      // if we already put it all questions from one tag, then get a random from any tag
+      if (q.rowCount === 0) {
+        q = await query("SELECT * FROM question ORDER BY RANDOM() LIMIT 1");
+      }
 
       const question: Question = q.rows[0];
       this.questions.push(question);

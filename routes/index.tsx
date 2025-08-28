@@ -13,7 +13,6 @@ export const handler: Handlers = {
   async GET(req, ctx) {
     const url = new URL(req.url);
     const deckname = url.searchParams.get("deckname");
-    console.log(Sessions);
 
     const decks = await get_all_decks();
     const tags = await get_all_tags();
