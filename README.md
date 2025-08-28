@@ -19,7 +19,7 @@ weaknesses.
 # How to install 🚀
 
 Simply copy the
-(docker-compose.yml)[https://github.com/WasixXD/posc/blob/main/docker-compose.yml]
+[docker-compose.yml](https://github.com/WasixXD/posc/blob/main/docker-compose.yml)
 and run with
 
 ```bash
