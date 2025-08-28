@@ -45,17 +45,15 @@ export default function QuestionIsland(props: Props) {
 
   return (
     <div class="flex flex-col items-center content-center justify-center">
-      <div class="w-full h-[400px] flex flex-col items-center justify-center mt-8">
+      <div class="w-full max-w-4xl h-[400px] flex flex-col items-center justify-center mt-8">
         <img
           src={question.question}
           alt="The question to be solved"
-          class="p-4 rounded-box border border-base-content/5 bg-base-100"
-          width="800"
-          height="400"
+          class="max-w-full max-h-full object-contain p-4 rounded-box border border-base-content/5 bg-base-100"
         />
       </div>
 
-      <div class="w-[800px] h-[400px] flex flex-col items-center justify-center mt-8 space-y-4">
+      <div class="w-full max-w-4xl flex flex-col items-center justify-center mt-8 space-y-4">
         {["A", "B", "C", "D", "E"].map((value) => (
           <Choice
             key={value}
@@ -70,7 +68,7 @@ export default function QuestionIsland(props: Props) {
       <button
         type="button"
         onClick={handle_click}
-        class="btn btn-accent btn-md"
+        class="btn btn-accent btn-md mt-6"
         disabled={responses[cursor] === undefined}
       >
         Next
