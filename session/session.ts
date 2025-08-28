@@ -16,15 +16,42 @@ export interface Performance {
   corrects: number;
 }
 
+export interface UserResponse {
+  value: string;
+  tagId: number;
+}
+
 export class Session {
   session_id: string = "";
   cursor: number = 0;
   questions: Question[] = [];
   deck_id: string = "";
+  userResponses: UserResponse[] = [];
 
   constructor(deck_id: string) {
     this.session_id = crypto.randomUUID();
     this.deck_id = deck_id;
+  }
+
+  async createPerformance(tag: number) {
+    await query(
+      "INSERT INTO performance(tag_id, corrects, errors) VALUES($1, 0, 0) ON CONFLICT DO NOTHING",
+      [tag],
+    );
+  }
+
+  async updatePerformance(responses: UserResponse[]) {
+    this.userResponses = responses;
+    for (let i = 0; i < responses.length; i++) {
+      const correct = this.questions[i];
+      const userQ = responses[i];
+      const row = correct.correct === userQ.value ? "corrects" : "errors";
+
+      await query(
+        `UPDATE performance SET ${row} = ${row} + 1 WHERE tag_id = $1`,
+        [correct.tag_id],
+      );
+    }
   }
 
   // Weighted Random Selection
@@ -34,9 +61,9 @@ export class Session {
     const weightedList = [];
     let weightedSum = 0;
     for (const performance of performances) {
-      // assign a weight to each tag, based on the formula (errors / (correct + errors))
-      const weight = performance.errors /
-        (performance.corrects + performance.errors);
+      // assign a weight to each tag, based on the formula (errors / (correct + errors + length))
+      const weight = (performance.errors + 1) /
+        (performance.corrects + performance.errors + performances.length);
       weightedList.push({ tagId: performance.tag_id, weight });
       // sum the weight
       weightedSum += weight;
@@ -76,6 +103,7 @@ export class Session {
       [tagsId],
     );
 
+    // if doesnt exist a performance we random select a question and create the performance for that tag
     if (performancesRows.rowCount <= 0) {
       for (let i = 0; i < maxQuestions; i++) {
         const q = await query(
@@ -85,6 +113,8 @@ export class Session {
 
         const question: Question = q.rows[0];
         this.questions.push(question);
+
+        await this.createPerformance(question.tag_id);
       }
       return;
     }
@@ -100,6 +130,7 @@ export class Session {
 
       const question: Question = q.rows[0];
       this.questions.push(question);
+      await this.createPerformance(question.tag_id);
     }
   }
 }

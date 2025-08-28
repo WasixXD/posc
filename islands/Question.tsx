@@ -15,6 +15,7 @@ export default function QuestionIsland(props: Props) {
   const [responses, setResponses] = useState<object[]>([]);
 
   const handle_response = (value: string, tagId: number) => {
+    if (responses[cursor] !== undefined) return;
     setResponses((prev) => {
       const copy = [...prev];
       copy[cursor] = { value, tagId };
@@ -24,10 +25,15 @@ export default function QuestionIsland(props: Props) {
 
   const handle_click = async () => {
     if (cursor === questions.length - 1) {
-      await fetch("/api/create/performance", {
+      const res = await fetch("/api/create/performance", {
         method: "POST",
         body: JSON.stringify({ responses, uuid }),
       });
+
+      if (res.redirected) {
+        const location = res.url;
+        window.location.href = location;
+      }
       return;
     }
     updateCursor(cursor + 1);
@@ -65,6 +71,7 @@ export default function QuestionIsland(props: Props) {
         type="button"
         onClick={handle_click}
         class="btn btn-accent btn-md"
+        disabled={responses[cursor] === undefined}
       >
         Next
 

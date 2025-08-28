@@ -12,6 +12,9 @@ import * as $api_list_deck from "./routes/api/list/deck.ts";
 import * as $api_list_tag from "./routes/api/list/tag.ts";
 import * as $index from "./routes/index.tsx";
 import * as $session_index from "./routes/session/index.tsx";
+import * as $statistics from "./routes/statistics.tsx";
+import * as $AnswerTable from "./islands/AnswerTable.tsx";
+import * as $Chart from "./islands/Chart.tsx";
 import * as $Home from "./islands/Home.tsx";
 import * as $Question from "./islands/Question.tsx";
 import type { Manifest } from "$fresh/server.ts";
@@ -28,8 +31,11 @@ const manifest = {
     "./routes/api/list/tag.ts": $api_list_tag,
     "./routes/index.tsx": $index,
     "./routes/session/index.tsx": $session_index,
+    "./routes/statistics.tsx": $statistics,
   },
   islands: {
+    "./islands/AnswerTable.tsx": $AnswerTable,
+    "./islands/Chart.tsx": $Chart,
     "./islands/Home.tsx": $Home,
     "./islands/Question.tsx": $Question,
   },

@@ -13,7 +13,7 @@ CREATE TABLE tag (
 );
 
 CREATE TABLE performance (
-    tag_id int references tag (tag_id),
+    tag_id int references tag (tag_id) primary key,
     errors int default 0,
     corrects int default 0
 );
